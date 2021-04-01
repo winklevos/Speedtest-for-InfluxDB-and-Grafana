@@ -16,7 +16,7 @@ services:
     restart: unless-stopped
  
   speedtest:
-    image: winklevos/speedtest-for-influxdb-and-grafana
+    image: winklevos/speedtest-for-influxdb-and-grafana:latest
     container_name: speedtest
     depends_on:
       - influxdb
