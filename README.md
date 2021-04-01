@@ -32,9 +32,9 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 
 ## Requirements
 
-influxdb(https://hub.docker.com/_/influxdb) version 1.8.4 or before
+[influxdb](https://hub.docker.com/_/influxdb) version 1.8.4 or before
 
-grafana(https://hub.docker.com/r/grafana/grafana)
+[grafana](https://hub.docker.com/r/grafana/grafana)
 
 
 ## Usage 
