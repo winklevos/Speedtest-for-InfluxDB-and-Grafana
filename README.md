@@ -1,7 +1,7 @@
 **Speedtest.net Collector For InfluxDB and Grafana**
 ------------------------------
 
-![Screenshot](https://github.com/winklevos/Speedtest-for-InfluxDB-and-Grafana/blob/master/dashboard-screenshot.PNG)
+![Screenshot](https://raw.githubusercontent.com/winklevos/Speedtest-for-InfluxDB-and-Grafana/master/dashboard-screenshot.PNG)
 
 This tool is a wrapper for speedtest-cli which allows you to run periodic speedtets and save the results to Influxdb
 
