@@ -10,12 +10,12 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 #### GENERAL
 |Key            |Description                                                                                                         |
 |:--------------|:-------------------------------------------------------------------------------------------------------------------|
-|Delay          |Delay between runs                                                                                                  |
+|Delay          |Seconds between speedtests                                                                                          |
 #### INFLUXDB
 |Key            |Description                                                                                                         |
 |:--------------|:-------------------------------------------------------------------------------------------------------------------|
-|Address        |Delay between updating metrics                                                                                      |
-|Port           |InfluxDB port to connect to.  8086 in most cases                                                                    |
+|Address        |InfluxDB host or container name                                                                                     |
+|Port           |InfluxDB port default 8086                                                                                          |
 |Database       |Database to write collected stats to                                                                                |
 |Username       |User that has access to the database                                                                                |
 |Password       |Password for above user                                                                                             |
@@ -30,8 +30,13 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 |Level          |Set how verbose the console output is                                                           |
 
 
+## Requirements
 
-## Usage
+influxdb version 1.8.4 or before
+grafana
+
+
+## Direct Usage
 
 Before the first use run pip3 install -r requirements.txt
 

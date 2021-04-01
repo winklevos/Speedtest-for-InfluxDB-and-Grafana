@@ -1,8 +1,44 @@
-version: '2'
+version: '3.9'
+
 services:
+  
+  influxdb:
+    image: influxdb:1.8.4
+    container_name: influxdb
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=speedtests
+      - INFLUXDB_ADMIN_USER=user
+      - INFLUXDB_ADMIN_PASSWORD=password
+    restart: unless-stopped
+ 
   speedtest:
-    image: atribe/speedtest-for-influxdb-and-grafana
+    image: winklevos/speedtest-for-influxdb-and-grafana
     container_name: speedtest
+    depends_on:
+      - influxdb
     volumes:
       - ./config.ini:/src/config.ini
-    restart: always
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./grafana-provisioning/:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=user
+      - GF_SECURITY_ADMIN_PASSWORD=pasword
+    restart: unless-stopped
+
+volumes:
+  grafana-storage:
+  influxdb-storage:
