@@ -36,29 +36,44 @@ influxdb version 1.8.4 or before
 
 grafana
 
-*docker-compose.yml example contains config including these requirements*
 
-## Direct Usage
+## Usage 
+
+**Docker Compose**
+*[docker-compose.yml](/docker-compose.yml) example contains config including these requirements*
+
+download and configure [config.ini](/config.ini) 
+
+
+**Manual**
+```docker run -d \
+--name="speedtest" \
+-v config.ini:/src/config.ini \
+--restart="unless-stopped" \
+winklevos/speedtest-for-influxdb-and-grafana
+```
+
+<!-- ## Direct Usage
 
 Before the first use run pip3 install -r requirements.txt
 
 Enter your desired information in config.ini 
 
-Run influxspeedtest.py
+Run influxspeedtest.py -->
 
-**Custom Config File Name**
+<!-- **Custom Config File Name**
 
 If you wish to use a config file by a different name set an ENV Variable called influxspeedtest.  The value you set will be the config file that's used. 
-  
+   -->
 
-***Requirements***
+<!-- ***Requirements***
 
 Python 3+
 
 You will need the influxdb library installed to use this - [Found Here](https://github.com/influxdata/influxdb-python)
-You will need the speedtest-cli library installed to use this - [Found Here](https://github.com/sivel/speedtest-cli)
+You will need the speedtest-cli library installed to use this - [Found Here](https://github.com/sivel/speedtest-cli) -->
 
-## Docker Setup
+<!-- ## Docker Setup
 
 1. Install [Docker](https://www.docker.com/)
 
@@ -92,4 +107,4 @@ atribe/speedtest-for-influxdb-and-grafana
  ```bash
  curl -O https://raw.githubusercontent.com/barrycarey/Speedtest-for-InfluxDB-and-Grafana/master/docker-compose.yml docker-compose.yml
  docker-compose up -d
- ```
+ ``` -->
