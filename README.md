@@ -10,7 +10,7 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 #### GENERAL
 |Key            |Description                                                                                                         |
 |:--------------|:-------------------------------------------------------------------------------------------------------------------|
-|Delay          |Seconds between speedtests                                                                                          |
+|Delay          |Seconds between speedtests (default 30 min)                                                                         |
 #### INFLUXDB
 |Key            |Description                                                                                                         |
 |:--------------|:-------------------------------------------------------------------------------------------------------------------|
