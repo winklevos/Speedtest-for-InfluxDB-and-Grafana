@@ -98,19 +98,21 @@ class InfluxdbSpeedtest():
                     'bytes_received': result_dict['bytes_received'],
                     'upload': result_dict['upload'],
                     'bytes_sent': result_dict['bytes_sent'],
-                    'ping': result_dict['server']['latency'],
-                    'isp': result_dict['client']['isp'],
-                    'server': result_dict['server']['id'],
-                    'server_name': result_dict['server']['name'],
-                    'server_country': result_dict['server']['country'],
-                    'server_sponsor': result_dict['server']['sponsor'],
-                    'result_url': result_dict['share']
+                    'ping': result_dict['server']['latency']#,
+                    #'isp': result_dict['client']['isp'],
+                    #'server': result_dict['server']['id'],
+                    #'server_name': result_dict['server']['name'],
+                    #'server_country': result_dict['server']['country'],
+                    #'server_sponsor': result_dict['server']['sponsor']#,
+                    # 'result_url': result_dict['share']
                 },
                 'tags': {
                     'server': result_dict['server']['id'],
                     'server_name': result_dict['server']['name'],
                     'server_country': result_dict['server']['country'],
-                    'isp': result_dict['client']['isp']
+                    'server_sponsor': result_dict['server']['sponsor'],
+                    'isp': result_dict['client']['isp'],
+                    'result_url': result_dict['share']
                 }
             }
         ]
