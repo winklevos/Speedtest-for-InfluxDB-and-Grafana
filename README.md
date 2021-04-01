@@ -33,8 +33,10 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 ## Requirements
 
 influxdb version 1.8.4 or before
+
 grafana
 
+*docker-compose.yml example contains config including these requirements*
 
 ## Direct Usage
 
