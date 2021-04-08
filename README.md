@@ -22,8 +22,10 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 #### SPEEDTEST
 |Key            |Description                                                                                                         |
 |:--------------|:-------------------------------------------------------------------------------------------------------------------|
-|Server         |Comma sperated list of servers.  Leave blank for auto                                                               |
-|Share          |Upload results to speedtest.net and retrieve url                                                                    |
+|Servers        |Comma sperated list of servers 0001,0002.  Leave blank for auto                                    |
+|Mode           |How list is treated, all - runs speedtest on all servers, select - selects best server from list, exclude - ensure listed servers are not used |
+|Share          |Upload results to speedtest.net and retrieve url                                                   |
+|Secure         |Runs speedtest over HTTPS                                                                          |
 #### LOGGING
 |Key            |Description                                                                                                         |
 |:--------------|:-------------------------------------------------------------------------------------------------------------------|
@@ -40,9 +42,9 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 ## Usage 
 
 **Docker Compose**
-*[docker-compose.yml](https://github.com/winklevos/Speedtest-for-InfluxDB-and-Grafana/blob/master/docker-compose.yml) example contains config including these requirements*
+*[docker-compose.yml](docker-compose.yml) example contains config including these requirements*
 
-download and configure [config.ini](https://github.com/winklevos/Speedtest-for-InfluxDB-and-Grafana/blob/master/config.ini) in the same directory as your docker-compose file  
+download and configure [config.ini](config.ini-dist) in the same directory as your docker-compose file  
 
 
 **Manual**
