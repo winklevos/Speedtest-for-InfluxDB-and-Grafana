@@ -89,7 +89,6 @@ class InfluxdbSpeedtest():
 
             log.info(f"Selected server {self.speedtest.best['name']} (id:{self.speedtest.best['id']})")
 
-
     def send_results(self):
         """
         Formats the payload to send to InfluxDB
