@@ -57,6 +57,6 @@ winklevos/speedtest-for-influxdb-and-grafana
 
 0. Clone repo https://github.com/winklevos/Speedtest-for-InfluxDB-and-Grafana.git
 1. Install required Python modules `pip install -r requirements.txt`
-2. Create config.ini `cp config.ini-dist config.ini`
+2. Create config.ini `cp config.ini-dist config.ini` or rename if not developing
 3. Configure `config.ini`
 4. `./influxspeedtest.py`
