@@ -10,10 +10,20 @@ Password =
 Verify_SSL = False
 
 [SPEEDTEST]
-# Leave blank to auto pick server
-Server =
-#if true speedtest result is posted to speedtest.net and url is returned
+# Leave Servers blank to auto pick closest server
+
+# Comma seperated list of server ids 00000,00001,00002
+Servers =
+# Mode determines how the list is used
+#   all - run a speedtest against each server in the list
+#   select - select a speedtest server from the list
+#   exclude - select the best server not in the list
+Mode = all
+
+# if True speedtest result is posted to speedtest.net and url is returned
 Share = False
+# if True completes speedtests over HTTPS
+Secure = True
 
 [LOGGING]
 # Valid Options: critical, error, warning, info, debug
