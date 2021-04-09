@@ -16,7 +16,6 @@ class InfluxdbSpeedtest():
 
         self.influx_client = self._get_influx_connection()
         self.speedtest = None
-        self.results = None
 
     def _get_influx_connection(self):
         """
@@ -52,7 +51,7 @@ class InfluxdbSpeedtest():
 
         return influx
 
-    def setup_speedtest(self, server=None):
+    def setup_speedtest(self, servers=None, mode='select'):
         """
         Initializes the Speed Test client with the provided server
         :param server: Int
@@ -60,35 +59,42 @@ class InfluxdbSpeedtest():
         """
         speedtest.build_user_agent()
 
-        log.debug('Setting up SpeedTest.net client')
+        log.debug('Setting up Speedtest.net client')
 
-        if server is None:
-            server = []
-        else:
-            server = server.split() # Single server to list
+        if servers:
+            log.info(f"Selecting server {('excluding','from')[mode!='exclude']}: {servers}")
 
         try:
-            self.speedtest = speedtest.Speedtest()
+            self.speedtest = speedtest.Speedtest(secure=config.secure)
         except speedtest.ConfigRetrievalError:
             log.critical('Failed to get speedtest.net configuration.  Aborting')
             sys.exit(1)
 
-        self.speedtest.get_servers(server)
+        
+        servers_in = None
+        servers_ex = None
 
-        log.debug('Picking the closest server')
+        if mode == 'select':
+            servers_in = servers
+        else:
+            servers_ex = servers
 
-        self.speedtest.get_best_server()
+        self.speedtest.get_servers(servers_in,servers_ex)
 
-        log.info('Selected Server %s in %s', self.speedtest.best['id'], self.speedtest.best['name'])
+        # log.debug(self.speedtest.servers)
 
-        self.results = self.speedtest.results
+        if len(self.speedtest.servers) != 1:
+            log.debug('Selecting the closest server')
+            self.speedtest.get_best_server()
+
+            log.info(f"Selected server {self.speedtest.best['name']} (id:{self.speedtest.best['id']})")
 
     def send_results(self):
         """
         Formats the payload to send to InfluxDB
         :rtype: None
         """
-        result_dict = self.results.dict()
+        result_dict = self.speedtest.results.dict()
 
         input_points = [
             {
@@ -98,13 +104,7 @@ class InfluxdbSpeedtest():
                     'bytes_received': result_dict['bytes_received'],
                     'upload': result_dict['upload'],
                     'bytes_sent': result_dict['bytes_sent'],
-                    'ping': result_dict['server']['latency']#,
-                    #'isp': result_dict['client']['isp'],
-                    #'server': result_dict['server']['id'],
-                    #'server_name': result_dict['server']['name'],
-                    #'server_country': result_dict['server']['country'],
-                    #'server_sponsor': result_dict['server']['sponsor']#,
-                    # 'result_url': result_dict['share']
+                    'ping': result_dict['ping']
                 },
                 'tags': {
                     'server': result_dict['server']['id'],
@@ -119,42 +119,45 @@ class InfluxdbSpeedtest():
 
         self.write_influx_data(input_points)
 
-    def run_speed_test(self, server=None, share=False):
+    def run_speed_test(self, servers=None, share=False, mode='select'):
         """
         Performs the speed test with the provided server
         :param server: Server to test against
         """
-        log.info('Starting Speed Test For Server %s', server)
+        log.info('Starting Speedtest')
+        #ensure previous results are removed
+        self.speedtest = None
 
         try:
-            self.setup_speedtest(server)
+            self.setup_speedtest(servers, mode)
         except speedtest.NoMatchedServers:
-            log.error('No matched servers: %s', server)
+            log.error(f'No servers matched: {servers}')
             return
         except speedtest.ServersRetrievalError:
             log.critical('Cannot retrieve speedtest.net server list. Aborting')
             return
         except speedtest.InvalidServerIDType:
-            log.error('%s is an invalid server type, must be int', server)
+            log.error(f'{servers} is an invalid server type, must be int')
             return
 
         log.info('Starting download test')
         self.speedtest.download()
         log.info('Starting upload test')
         self.speedtest.upload()
+        
+
         if(share):
-            self.results.share()
+            self.speedtest.results.share()
+        
         self.send_results()
 
-        results = self.results.dict()
+        results = self.speedtest.results.dict()
         log.info('Download: %sMbps - Upload: %sMbps - Latency: %sms - Share: %s',
                  round(results['download'] / 1000000, 2),
                  round(results['upload'] / 1000000, 2),
-                 results['server']['latency'],
+                 results['ping'],
                  results['share']
                  )
-
-
 
     def write_influx_data(self, json_data):
         """
@@ -179,12 +182,14 @@ class InfluxdbSpeedtest():
         log.debug('Data written to InfluxDB')
 
     def run(self):
-
+        
         while True:
-            if not config.servers:
-                self.run_speed_test(share=config.share)
-            else:
+            if config.mode != 'all' or not config.servers:
+                self.run_speed_test(config.servers, config.share, config.mode)
+            
+            elif config.mode == 'all' and config.servers:
                 for server in config.servers:
-                    self.run_speed_test(server, config.share)
-            log.info('Waiting %s seconds until next test', config.delay)
+                    self.run_speed_test([server], config.share, 'select')
+            
+            log.info(f'Waiting {config.delay} seconds until next test')
             time.sleep(config.delay)

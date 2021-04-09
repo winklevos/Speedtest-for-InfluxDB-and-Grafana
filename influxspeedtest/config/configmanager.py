@@ -34,11 +34,14 @@ class ConfigManager():
         self.influx_verify_ssl = self.config['INFLUXDB'].getboolean('Verify_SSL', fallback=True)
 
         # Logging
-        self.logging_level = self.config['LOGGING'].get('Level', fallback='debug')
+        self.logging_level = self.config['LOGGING'].get('Level', fallback='info')
         self.logging_level = self.logging_level.upper()
 
         # Speedtest
-        test_server = self.config['SPEEDTEST'].get('Server', fallback=None)
-        if test_server:
-            self.servers = test_server.split(',')
+        servers = self.config['SPEEDTEST'].get('Servers', fallback=None)
+        self.mode = self.config['SPEEDTEST'].get('Mode', fallback='all')
+        if servers:
+            self.servers = servers.split(',')
+
         self.share = self.config['SPEEDTEST'].getboolean('Share', fallback=False)
+        self.secure = self.config['SPEEDTEST'].getboolean('Secure', fallback=True)
