@@ -16,7 +16,6 @@ class InfluxdbSpeedtest():
 
         self.influx_client = self._get_influx_connection()
         self.speedtest = None
-        self.results = None
 
     def _get_influx_connection(self):
         """
@@ -125,6 +124,8 @@ class InfluxdbSpeedtest():
         :param server: Server to test against
         """
         log.info('Starting Speedtest')
+        #ensure previous results are removed
+        self.speedtest = None
 
         try:
             self.setup_speedtest(servers, mode)
@@ -148,8 +149,6 @@ class InfluxdbSpeedtest():
             self.speedtest.results.share()
         
         self.send_results()
-
-        # log.debug(self.speedtest.results)
 
         results = self.speedtest.results.dict()
         log.info('Download: %sMbps - Upload: %sMbps - Latency: %sms - Share: %s',
