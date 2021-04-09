@@ -61,7 +61,8 @@ class InfluxdbSpeedtest():
 
         log.debug('Setting up Speedtest.net client')
 
-        log.debug(f"Selecting server {('excluding','from')[mode!='exclude']}: {servers}")
+        if servers:
+            log.info(f"Selecting server {('excluding','from')[mode!='exclude']}: {servers}")
 
         try:
             self.speedtest = speedtest.Speedtest(secure=config.secure)
@@ -80,7 +81,7 @@ class InfluxdbSpeedtest():
 
         self.speedtest.get_servers(servers_in,servers_ex)
 
-        log.debug(self.speedtest.servers)
+        # log.debug(self.speedtest.servers)
 
         if len(self.speedtest.servers) != 1:
             log.debug('Selecting the closest server')
