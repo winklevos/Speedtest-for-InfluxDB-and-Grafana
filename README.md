@@ -42,9 +42,9 @@ This tool is a wrapper for speedtest-cli which allows you to run periodic speedt
 ## Usage 
 
 **Docker Compose**
-*[docker-compose.yml](docker-compose.yml) example contains config including these requirements*
+*[docker-compose.yml](https://raw.githubusercontent.com/winklevos/Speedtest-for-InfluxDB-and-Grafana/master/docker-compose.yml) example contains config including these requirements*
 
-download and configure [config.ini](config.ini-dist) in the same directory as your docker-compose file  
+download and configure [config.ini](https://raw.githubusercontent.com/winklevos/Speedtest-for-InfluxDB-and-Grafana/master/config.ini-dist) in the same directory as your docker-compose file  
 
 
 **Manual**
